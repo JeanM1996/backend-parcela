@@ -5,7 +5,7 @@ let parcelaSchema = new Schema({
     agricultor: {
         type: String
     },
-    extensión: {
+    extension: {
         type: String
     },
     lugar: {
