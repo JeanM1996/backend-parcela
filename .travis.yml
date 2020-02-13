@@ -1,0 +1,25 @@
+language: node_js
+node_js:
+  - "12"
+sudo: required
+services:
+  - docker
+  - mongodb
+before_script:
+  - npm install
+script:
+  - docker build -t backparcela .
+after_success:
+  - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+  - docker tag backparcela $DOCKER_USER/backparcela:$TRAVIS_BUILD_NUMBER
+  - docker push $DOCKER_USER/backparcela:$TRAVIS_BUILD_NUMBER
+  - docker tag backparcela $DOCKER_USER/backparcela:latest
+  - docker push $DOCKER_USER/backparcela:latest
+
+deploy:
+  provider: heroku
+  api_key: 
+    secure: $HEROKU_API_KEY
+  app: microservice-parcela
+  on:
+    repo: JeanM1996/backend-parcela
